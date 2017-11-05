@@ -1,0 +1,96 @@
+
+<html>
+<head>
+<title>Student</title>
+</head>
+<body>
+<form name="form1" action ="" method="POST">
+<table>
+<tr>
+<td>Name: </td>
+<td><input type ="text" name ="t1"></td>
+</tr>
+<tr>
+<td>ROLL: </td>
+<td><input type ="text" name ="t2"></td>
+</tr>
+<tr>
+<td>FACULTY: </td>
+<td><input type ="text" name ="t3"></td>
+</tr>
+<tr>
+      <td><input type ="submit" name="add" value ="ADD"></td>
+	  <td><input type ="submit" name="show"  value="SHOW"></td>
+	  <td><input type ="submit" name="search" value ="SEARCH"></td>
+	  <td><input type ="submit" name="delete" value ="DELETE"></td>
+	  <td><input type ="submit" name="update" value ="UPDATE"></td>
+</tr>
+
+</table>
+</form>
+
+<?php
+
+  $link = mysqli_connect("localhost","root","","student");
+  if($link){ echo "connected";}
+  
+  if(isset($_POST["add"]))
+  {
+	  
+	 $insert= mysqli_query($link,"insert into hstu values ('$_POST[t1]','$_POST[t2]','$_POST[t3]')");
+       if($insert)
+	   {
+		   echo "Inserted";
+	   }
+  }
+  if(isset($_POST["show"]))
+  {
+	  $res =mysqli_query($link,"select * from hstu");
+	  echo"<table border='1'>";
+	  while($ros= mysqli_fetch_array($res))
+	  {
+		  echo "<tr>";
+		  echo "<td>".$ros["name"]."</td>";
+		  echo "<td>".$ros["roll"]."</td>";
+		  echo "<td>".$ros["faculty"]."</td>";
+		  echo "</tr>";  
+		  
+	  }
+	  echo"</table>";  
+  }
+  if(isset($_POST["search"]))
+  {
+	  $res =mysqli_query($link,"select * from hstu where roll='$_POST[t2]'");
+	  echo"<table border='1'>";
+	  while($ros= mysqli_fetch_array($res))
+	  {
+		  echo "<tr>";
+		  echo "<td>".$ros["name"]."</td>";
+		  echo "<td>".$ros["roll"]."</td>";
+		  echo "<td>".$ros["faculty"]."</td>";
+		  echo "</tr>";    
+	  }
+	  echo"</table>";	  
+  }
+  if(isset($_POST["delete"]))
+  {
+	  $del = mysqli_query($link,"delete from hstu where roll='$_POST[t2]'");
+	  if($del)
+	  {
+		  echo "deleted";
+		  
+	  }
+  }
+  if(isset($_POST["update"]))
+  {
+	  $del = mysqli_query($link,"UPDATE hstu SET NAME='$_POST[t1]' , FACULTY ='$_POST[t3]'  where roll='$_POST[t2]'");
+	  if($del)
+	  {
+		  echo "updateed";
+		  
+	  }
+  }
+  
+?>
+</body>
+</html>
